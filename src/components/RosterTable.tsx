@@ -13,7 +13,7 @@ interface Props {
   readonly?: boolean;
 }
 
-export default function RosterTable({ roster, readonly }: Props) {
+export default function RosterTable({ roster }: Props) {
   return (
     <div className="glass-card overflow-hidden animate-fade-in">
       <Table>

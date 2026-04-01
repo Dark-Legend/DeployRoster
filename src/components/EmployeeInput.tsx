@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRosterStore } from "../store/rosterStore";
 import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/Input";
+import { Input } from "../components/ui/input.tsx";
 import { Plus, X, Users } from "lucide-react";
 
 export default function EmployeeInput() {

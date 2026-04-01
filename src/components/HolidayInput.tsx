@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useRosterStore } from "../store/rosterStore";
 import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/Input";
+import { Input } from "../components/ui/input.tsx";
 import { Plus, X, CalendarOff } from "lucide-react";
 import { format, parse, isValid, getDaysInMonth } from "date-fns";
 

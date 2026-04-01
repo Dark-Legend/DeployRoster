@@ -5,7 +5,7 @@ import {
   startOfMonth,
   addDays,
 } from "date-fns";
-import type { RosterEntry } from "@/store/rosterStore";
+import type { RosterEntry } from "../store/rosterStore";
 
 interface GenerateOptions {
   month: number; // 0-indexed

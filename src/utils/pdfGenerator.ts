@@ -1,5 +1,5 @@
 import { PDFDocument, rgb, StandardFonts } from "pdf-lib";
-import type { RosterEntry } from "@/store/rosterStore";
+import type { RosterEntry } from "../store/rosterStore";
 
 interface PdfOptions {
   month: string;
