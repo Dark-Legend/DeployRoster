@@ -3,8 +3,6 @@ import { DutyNotificationEmail } from "@/emails/duty-notification";
 import { NextRequest, NextResponse } from "next/server";
 import { render } from "react-email";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "placeholder");
-
 interface SendEmailRequest {
   engineerName: string;
   engineerEmail: string;
@@ -15,6 +13,17 @@ interface SendEmailRequest {
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if RESEND_API_KEY is configured
+    if (!process.env.RESEND_API_KEY) {
+      console.error("[v0] RESEND_API_KEY environment variable not configured");
+      return NextResponse.json(
+        { error: "Email service not configured. Please add RESEND_API_KEY." },
+        { status: 500 }
+      );
+    }
+
+    const resend = new Resend(process.env.RESEND_API_KEY);
+
     const body = (await request.json()) as SendEmailRequest;
     const {
       engineerName,
@@ -47,6 +56,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log(`[v0] Rendering email for ${engineerName} (${engineerEmail})`);
     const emailHtml = await render(
       DutyNotificationEmail({
         engineerName,
@@ -56,21 +66,23 @@ export async function POST(request: NextRequest) {
       })
     );
 
+    console.log(`[v0] Sending email via Resend to ${engineerEmail}`);
     const response = await resend.emails.send({
-      from: "noreply@deployroster.dev",
+      from: "onboarding@resend.dev",
       to: engineerEmail,
       subject: `Deployment Duty Notification - ${dutyDate}`,
       html: emailHtml,
     });
 
     if (response.error) {
-      console.error("Resend error:", response.error);
+      console.error("[v0] Resend error:", response.error);
       return NextResponse.json(
-        { error: "Failed to send email" },
+        { error: `Failed to send email: ${response.error.message}` },
         { status: 500 }
       );
     }
 
+    console.log(`[v0] Email sent successfully to ${engineerEmail} with ID: ${response.data?.id}`);
     return NextResponse.json(
       {
         success: true,
@@ -80,9 +92,10 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Error sending email:", error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("[v0] Error sending email:", errorMessage);
     return NextResponse.json(
-      { error: "Internal server error" },
+      { error: `Internal server error: ${errorMessage}` },
       { status: 500 }
     );
   }
