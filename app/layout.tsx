@@ -1,8 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
-import { Toaster } from "@/src/components/ui/toaster";
-import { Toaster as Sonner } from "@/src/components/ui/sonner";
-import { TooltipProvider } from "@/src/components/ui/tooltip";
+import { Providers } from "./providers";
 import "@/src/index.css";
 
 const inter = Inter({
@@ -44,11 +42,7 @@ export default function RootLayout({
         `}</style>
       </head>
       <body className={`${inter.className} antialiased`}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          {children}
-        </TooltipProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
