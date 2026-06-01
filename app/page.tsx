@@ -1,14 +1,19 @@
+"use client";
+
 import { useState } from "react";
-import { useRosterStore } from "../store/rosterStore";
-import { generateRoster } from "../utils/rosterGenerator";
-import { generatePdf } from "../utils/pdfGenerator";
-import { Button } from "../components/ui/button";
-import { useToast } from "../hooks/use-toast";
-import EmployeeInput from "../components/EmployeeInput";
-import MonthSelector from "../components/MonthSelector";
-import HolidayInput from "../components/HolidayInput";
-import RosterStats from "../components/RosterStats";
-import RosterCalendar from "../components/RosterCalendar";
+
+export const dynamic = "force-dynamic";
+import { useRosterStore } from "@/src/store/rosterStore";
+import { generateRoster } from "@/src/utils/rosterGenerator";
+import { generatePdf } from "@/src/utils/pdfGenerator";
+import { Button } from "@/src/components/ui/button";
+import { useToast } from "@/src/hooks/use-toast";
+import EmployeeInput from "@/src/components/EmployeeInput";
+import MonthSelector from "@/src/components/MonthSelector";
+import HolidayInput from "@/src/components/HolidayInput";
+import RosterStats from "@/src/components/RosterStats";
+import RosterCalendar from "@/src/components/RosterCalendar";
+import RosterTable from "@/src/components/RosterTable";
 import {
   Sparkles,
   Download,
@@ -168,6 +173,17 @@ export default function Home() {
               holidayDates={store.holidays.map((h) => h.date)}
               onSwap={(a, b) => store.swapEngineers(a, b)}
             />
+            {/* RosterTable with email functionality */}
+            <div>
+              <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">
+                Roster Details
+              </h2>
+              <RosterTable 
+                roster={store.roster} 
+                month={store.month}
+                year={store.year}
+              />
+            </div>
           </div>
         ) : (
           <div className="glass-card p-12 text-center animate-fade-in">

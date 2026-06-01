@@ -1,9 +1,12 @@
-import { useParams, Link } from "react-router-dom";
-import { loadRoster } from "../store/rosterStore";
-import RosterStats from "../components/RosterStats";
-import RosterCalendar from "../components/RosterCalendar";
+"use client";
+
+import { loadRoster } from "@/src/store/rosterStore";
+import RosterStats from "@/src/components/RosterStats";
+import RosterCalendar from "@/src/components/RosterCalendar";
 import { Terminal, ArrowLeft } from "lucide-react";
-import { Button } from "../components/ui/button";
+import { Button } from "@/src/components/ui/button";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 const MONTHS = [
   "January",
@@ -21,7 +24,8 @@ const MONTHS = [
 ];
 
 export default function RosterView() {
-  const { id } = useParams<{ id: string }>();
+  const params = useParams();
+  const id = params.id as string;
   const data = id ? loadRoster(id) : null;
 
   if (!data) {
@@ -33,7 +37,7 @@ export default function RosterView() {
             Roster not found or link expired.
           </p>
           <Button asChild variant="secondary">
-            <Link to="/">
+            <Link href="/">
               <ArrowLeft className="w-4 h-4 mr-2" />
               Create New Roster
             </Link>
@@ -48,7 +52,7 @@ export default function RosterView() {
       <header className="border-b border-border/50 bg-card/50 backdrop-blur-sm sticky top-0 z-10">
         <div className="max-w-3xl mx-auto px-4 py-4 flex items-center gap-3">
           <Link
-            to="/"
+            href="/"
             className="text-muted-foreground hover:text-foreground transition-colors"
           >
             <ArrowLeft className="w-5 h-5" />
